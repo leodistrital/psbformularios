@@ -77,14 +77,7 @@ export const RenderRoutes = () => {
 						</React.Suspense>
 					}
 				/>
-				{/* <Route
-					path='login'
-					element={
-						<React.Suspense fallback={<>...</>}>
-							<Login />
-						</React.Suspense>
-					}
-				/> */}
+				
 				<Route path='*' element={<Personas />} />
 			</Routes>
 		</>
