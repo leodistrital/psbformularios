@@ -10,7 +10,7 @@ export const Login = () => {
 		<>
 			<div id='mainWrapper' className=''>
 				<Header />
-				<Intro />
+				{/* <Intro /> */}
 				<Formularios />
 			</div>
 			<Footer />

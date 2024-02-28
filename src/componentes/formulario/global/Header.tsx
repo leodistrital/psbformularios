@@ -1,12 +1,18 @@
 
+import { Intro } from '../login/Intro';
+import { useAppStore } from '../../../stores/app.store';
 
 export const Header = () => {
-  return (
+
+
+	const {inscripcion:inscripcionData} = useAppStore((state) => state);
+  
+return (
     <>
     <header className="pageHeader">
   <div className="maxW">
     <h1 className="logoPage">
-      <a href="panel.php">
+      <a href="panel">
         <span className="gHidden">
           Premio Nacional de Periodismo Simón Bolívar
         </span>
@@ -24,8 +30,13 @@ export const Header = () => {
     {/*Content Main menu*/}
     <div className="contMMenu">
       <div className="vAlign">
+       
         {/* <h2>INSCRIPCIÓN DE TRABAJOS</h2> */}
+       
         <br />
+        <br />
+        <br />
+         <pre>{JSON.stringify(inscripcionData, null, 2)}</pre>
         <p className="user">
           <strong className="des_login"> leonardo.cortes@mottif.com</strong>
           <a href="index.php?c=0" className="gBtn txtUp">
@@ -36,10 +47,11 @@ export const Header = () => {
         {/* <p class="title rec_destacar">La convocatoria se cierra el miércoles 11 de mayo a las 6:00 p.m.</p> */}
       </div>
     </div>
+    
     {/*End Content Main menu*/}
   </div>
 </header>
-
+    <Intro />
     </>
   )
 }

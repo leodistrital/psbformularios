@@ -1,13 +1,20 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Personas } from "../pages/Personas";
-import { Eventos } from "../pages/Eventos";
-import { Empresas } from "../pages/Empresas";
-import { Reportes } from '../pages/Reportes';
-import { Segmentos } from "../pages/Segmentos";
-import { Sectores } from "../pages/Sectores";
-import { Cuenta } from "../pages/Cuenta";
-import { Titulos } from "../pages/Titulos";
+// import { Personas } from "../pages/Personas";
+// import { Eventos } from "../pages/Eventos";
+// import { Empresas } from "../pages/Empresas";
+// import { Reportes } from '../pages/Reportes';
+// import { Segmentos } from "../pages/Segmentos";
+// import { Sectores } from "../pages/Sectores";
+// import { Cuenta } from "../pages/Cuenta";
+// import { Titulos } from "../pages/Titulos";
+import { Panel } from '../pages/formulario/Panel';
+import { Paso1 } from '../pages/formulario/Paso1';
+import { Paso2 } from '../pages/formulario/Paso2';
+import { Paso3 } from '../pages/formulario/Paso3';
+import { Paso4 } from '../pages/formulario/Paso4';
+import { Paso5 } from '../pages/formulario/Paso5';
+import { Autores } from '../pages/formulario/Autores';
 
 export const RenderRoutes = () => {
 	return (
@@ -17,11 +24,59 @@ export const RenderRoutes = () => {
 					index
 					element={
 						<React.Suspense fallback={<>...</>}>
-							<Personas />
+							<Panel />
 						</React.Suspense>
 					}
 				/>
 				<Route
+					path='paso1'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Paso1 />
+						</React.Suspense>
+					}
+				/>
+				<Route
+					path='paso2'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Paso2 />
+						</React.Suspense>
+					}
+				/>
+				<Route
+					path='paso3'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Paso3 />
+						</React.Suspense>
+					}
+				/>
+				<Route
+					path='paso4'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Paso4 />
+						</React.Suspense>
+					}
+				/>
+				<Route
+					path='paso5'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Paso5 />
+						</React.Suspense>
+					}
+				/>
+				<Route
+					path='autor'
+					element={
+						<React.Suspense fallback={<>...</>}>
+							<Autores />
+						</React.Suspense>
+					}
+				/>
+				{/* <Route
 					path='empresas'
 					element={
 						<React.Suspense fallback={<>...</>}>
@@ -76,9 +131,9 @@ export const RenderRoutes = () => {
 							<Cuenta />
 						</React.Suspense>
 					}
-				/>
+				/> */}
 				
-				<Route path='*' element={<Personas />} />
+				<Route path='*' element={<Panel />} />
 			</Routes>
 		</>
 	);
