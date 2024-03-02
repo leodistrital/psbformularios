@@ -18,7 +18,7 @@ export const Paso3 = () => {
 	useEffect(() => {
 		if (categoria === 0) {
 			console.log("error");
-			navigate("/panel");
+			// navigate("/panel");
 		}
 	}, []);
 

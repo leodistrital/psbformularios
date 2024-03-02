@@ -10,34 +10,29 @@ export const Paso2 = () => {
 	const setcategoria = useAppStore((state) => state.setcategoria);
 	const tipoTrabajo = useAppStore((state) => state.inscripcion.tipoTrabajo);
 
-  let datacategorias=[];
+	let datacategorias = [];
 
-  if(tipoTrabajo===1){
-    datacategorias = categoriasData; 
-  }
-  if(tipoTrabajo===2){
-   datacategorias  =categoriasData.filter((item) => item.relacion_cat === `1`);
-  }
-  
+	if (tipoTrabajo === 1) {
+		datacategorias = categoriasData;
+	}
+	if (tipoTrabajo === 2) {
+		datacategorias = categoriasData.filter(
+			(item) => item.relacion_cat === `1`
+		);
+	}
 
-// console.log(datacategorias);
-
-  // console.log(data);
 	const setTrabajo = (data) => {
 		// console.log("llego", data);
 		setcategoria(data);
 		navigate("/paso3");
 	};
 
-  useEffect(() => {
-    if(tipoTrabajo===0){
-      console.log('error');
-      navigate("/panel");
-    }
-
-
-  }, []);
-
+	useEffect(() => {
+		if (tipoTrabajo === 0) {
+			console.log("error");
+			navigate("/panel");
+		}
+	}, []);
 
 	return (
 		<>
@@ -62,16 +57,20 @@ export const Paso2 = () => {
 							<ul>
 								{datacategorias.map((item, index) => {
 									return (
-										<li key={index} className='itemCate '>
+										<li key={index} className='itemCate  '>
 											<div className='cLeft'>
 												<a
 													onClick={() =>
 														setTrabajo(item.cod_cat)
 													}
 													className='gBtn w100 txtUp btnStep '>
-													<span  dangerouslySetInnerHTML={{
-														__html: item.nom_cat,
-													}}/>
+													<span
+														dangerouslySetInnerHTML={{
+															__html:
+																item.nom_cat,
+														}}
+													/>
+													<span>{item.cod_cat}</span>
 												</a>
 											</div>
 											<div className='cRight'>

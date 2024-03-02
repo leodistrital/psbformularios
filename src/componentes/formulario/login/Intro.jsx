@@ -8,13 +8,13 @@ export const Intro = () => {
 							href='https://premiosimonbolivar.com/pdf/PNPSB_BasesDelPremio_Edicion48_2023.pdf'
 							target='_blank'
 							style={{
-								background: "#003566",
+								background: "#8c92ff",
 								color: "#fff",
 							}}>
 							<span
 								className='aMiddle'
 								style={{
-									background: "#003566",
+									background: "#8c92ff",
 									color: "#fff",
 								}}>
 								<span className='title'>

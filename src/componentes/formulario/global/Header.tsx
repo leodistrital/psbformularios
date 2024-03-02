@@ -17,7 +17,7 @@ return (
           Premio Nacional de Periodismo Simón Bolívar
         </span>
         <img
-          src="images/site/logo-psb.svg"
+          src="http://mottif.tv/psbformulario/images/site/logo-psb.svg"
           alt="Premio Nacional de Periodismo Simón Bolívar"
         />
       </a>
@@ -39,9 +39,9 @@ return (
          <pre>{JSON.stringify(inscripcionData, null, 2)}</pre>
         <p className="user">
           <strong className="des_login"> leonardo.cortes@mottif.com</strong>
-          <a href="index.php?c=0" className="gBtn txtUp">
+           <a href="index.php?c=0" className="gBtn txtUp">
             <span>Cerrar sesión</span>
-          </a>
+          </a> 
         </p>
         {/* <p class="title rec_destacar">La convocatoria se cierra el jueves 9 de mayo de 2019</p>    */}
         {/* <p class="title rec_destacar">La convocatoria se cierra el miércoles 11 de mayo a las 6:00 p.m.</p> */}
