@@ -1,10 +1,11 @@
 import { create } from "zustand";
 
+
 interface AppState {
 	login: boolean;
 	mail: string;
 	token: string;
-	perfil: number;
+	userid: number;
 	isloading: boolean;
 	inscripcion: {
 		id: string;
@@ -18,18 +19,20 @@ interface AppState {
 	};
 
 	logout: () => void;
-	iniciar: (mail: string, token: string) => void;
+	iniciar: (mail: string, token: string , userid: number) => void;
 	toogleLoading: (estado: boolean) => void;
 	settipoTrabajo: (value: number, ) => void;
 	setcategoria: (value: number, ) => void;
 	setformato: (value: number, ) => void;
 }
 
-export const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>((set) => (
+	
+	{
 	login: true,
 	mail: "",
 	token: "",
-	perfil: 0,
+	userid: 0,
 	isloading: false,
 	leo: 0,
 	inscripcion: {
@@ -49,8 +52,8 @@ export const useAppStore = create<AppState>((set) => ({
 			token: "",
 		})),
 
-	iniciar: (mail: string, token: string) =>
-		set(() => ({ login: true, mail: mail, token: token })),
+	iniciar: (mail: string, token: string , userid: number) =>
+		set(() => ({ login: true, mail: mail, token: token ,userid:userid  })),
 
 	toogleLoading: (estado) => {
 		set(() => ({

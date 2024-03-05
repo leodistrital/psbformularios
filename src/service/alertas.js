@@ -58,3 +58,52 @@ export const alertaconfirmarBoradoConID = ( Swal, deleteRegistro,id) => {
 			}
 		});
 };
+
+
+
+export const liginError = ( Swal) => {
+	Swal.fire({
+			title:
+				"<p>Error de Ingreso</p>",
+			// showDenyButton: true,
+			confirmButtonText: `Continuar`,
+			
+			customClass: {
+				confirmButton: "btnDarkcustom",
+				denyButton: "btnDarkcustom",
+				title: "titulocustom",
+			},
+		}).then((result) => {
+			if (result.isConfirmed) {
+                // console.log('confirmado ');
+                // console.log(deleteRegistro);
+				// deleteRegistro(id);
+				
+			}
+		});
+};
+
+
+
+
+export const liginErrorCorreo = ( Swal , errormensaje )  => {
+	Swal.fire({
+			title:
+				`<p>${errormensaje}</p>` ,
+			// showDenyButton: true,
+			confirmButtonText: `Continuar`,
+			
+			customClass: {
+				confirmButton: "btnDarkcustom",
+				denyButton: "btnDarkcustom",
+				title: "titulocustom",
+			},
+		}).then((result) => {
+			if (result.isConfirmed) {
+                // console.log('confirmado ');
+                // console.log(deleteRegistro);
+				// deleteRegistro(id);
+				
+			}
+		});
+};
