@@ -84,7 +84,7 @@ export const Registro = ({ Tabla }) => {
 								Contraseña:
 							</label>
 							<input
-								// type='password'
+								type='password'
 								{...register("rpass", {
 									required: {
 										value: true,
@@ -108,7 +108,7 @@ export const Registro = ({ Tabla }) => {
 								Confirmar contraseña:
 							</label>
 							<input
-								// type='password'
+								type='password'
 								{...register("rpass2", {
 									required: {
 										value: true,

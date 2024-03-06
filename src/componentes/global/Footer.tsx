@@ -1,5 +1,6 @@
 // import Modal from "react-responsive-modal";
 // import { useAppStore } from "../../stores/app.store";
+import { useAppStore } from "../../stores/app.store";
 
 export const Footer = () => {
 	// let posicion = "none";
@@ -7,6 +8,9 @@ export const Footer = () => {
 
 	// posicion = isloading ? "block" : "none";
 	// posicion = "block";
+
+	const { inscripcion: inscripcionData } = useAppStore((state) => state);
+	const { login, mail, token, userid } = useAppStore((state) => state);
 
 	return (
 		<>
@@ -19,6 +23,22 @@ export const Footer = () => {
 						/>
 					</div>
 					<div className='contFoot'>
+						<pre>
+							{JSON.stringify(inscripcionData, null, 2)}
+						</pre>
+						<textarea>
+							{JSON.stringify(
+								{
+									login,
+									mail,
+									token,
+									userid,
+								},
+								null,
+								2
+							)}
+						</textarea>
+
 						<p>
 							<a
 								href='https://www.premiosimonbolivar.com/premio.php?cod=XG3C6fwm00tyUjxz05wAXG3C6fwm&sel=1$$-1$$-qm4nNEHftm9uNBL12CXG3C6fwm'

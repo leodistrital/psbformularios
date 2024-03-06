@@ -1,6 +1,68 @@
+import { useEffect } from "react";
 import { HeaderPaso } from "../../componentes/formulario/global/HeaderPaso";
+import { useAppStore } from "../../stores/app.store";
+import { Conexion } from "../../service/conexion";
+import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+import { UploadFile } from "../../componentes/global/UploadFile";
 
 export const Paso4 = () => {
+
+	const {id} = useAppStore((state) => state.inscripcion);
+	const datatable = new Conexion ();
+	const Tabla = "trabajos";
+
+	const defaultValues = {
+		id: "0",
+		sinopsis_tra: "",
+		titulo_tra: "",
+		medios_tra: "",
+		doc1_tra: "",
+		entregas: [],
+	};
+
+
+	const { register , handleSubmit , reset, getValues } = useForm({defaultValues});
+	
+// console.log(id);
+
+	//CARGA INICIAL
+	useEffect (() => {
+
+		if (id === 0) {
+			console.log("error");
+			Navigate ("/panel");
+		}
+		console.log(id);
+
+		if (id > 0) {
+			// toogleLoading(true);
+			datatable.getItem(Tabla,id).then(({ data }) => {
+				console.log(data);
+				reset(data);
+
+				// reset1(data);
+				// console.log(getValues("sucursales").length);
+				// toogleLoading(false);
+			});
+		} 
+	}, []);
+
+	//CREAR Y EDITAR
+	const onSubmitpost = handleSubmit((data) => {
+		console.log(data);
+		// toogleLoading(true);
+			datatable
+				.getEditarItem(Tabla, data, id)
+				.then(({ resp }) => {
+					console.log(resp);
+					// alertaGuardado(resp.status, Swal, setOpen);
+					// toogleLoading(false);
+				});
+		
+	});
+
+
 	return (
 		<>
 			<div className='gContent maxW'>
@@ -20,10 +82,9 @@ export const Paso4 = () => {
 						<hr className='gLine noM' />
 						{/*Form trabajo*/}
 						<form
-							id='formTrabajo'
-							method='POST'
+							onSubmit={onSubmitpost}
 							className='gForm'
-							noValidate='novalidate'>
+							>
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>
 									1. Título del trabajo
@@ -32,9 +93,10 @@ export const Paso4 = () => {
 									{/* <label for="tit" class="gLabel">Nombre del trabajo</label> */}
 									<input
 										type='text'
-										name='tit'
-										id='tit'
-										defaultValue=''
+										{...register("titulo_tra", {
+												required: true,
+											})}
+										
 									/>
 								</p>
 							</fieldset>
@@ -44,7 +106,6 @@ export const Paso4 = () => {
 									2. Medio de publicación o emisión
 								</h3>
 								<p>
-									{" "}
 									Registrar únicamente el nombre del medio de
 									comunicación colombiano o del proyecto
 									periodístico de iniciativa colombiana al que
@@ -53,16 +114,16 @@ export const Paso4 = () => {
 								<p>
 									<input
 										type='text'
-										name='med'
-										id='med'
-										defaultValue=''
+										{...register("medio_tra", {
+												required: true,
+											})}
 									/>
 								</p>
 							</fieldset>
 							<hr className='gLine' />
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>
-									3. Certificado de publicación o emisión{" "}
+									3. Certificado de publicación o emisión
 								</h3>
 								<p>
 									Debe adjuntarse un certificado en formato
@@ -72,63 +133,16 @@ export const Paso4 = () => {
 									publicado o emitido el trabajo. En el
 									certificado debe constar que el trabajo fue
 									publicado o emitido entre el 1 de mayo del
-									2022 y el 30 de abril de 2023.{" "}
+									2023 y el 30 de abril de 2024.
 									<a
-										href='docs/Formato_Certificado_publicacion2023.docx'
+										href='#'
 										className='txtLora color2'>
 										<strong>(Descargar modelo)</strong>
 									</a>
 								</p>
 								<div className='gCol col2'>
 									<div>
-										<input
-											type='hidden'
-											defaultValue={2}
-											name='joven'
-											id='joven'
-										/>
-										<input
-											type='hidden'
-											defaultValue={100}
-											name='medio'
-											id='medio'
-										/>
-										<p>
-											<input
-												type='text'
-												name='cert'
-												id='cert'
-												defaultValue=''
-												readOnly=''
-												className='textFile'
-											/>
-										</p>
-										<div className='jFiler'>
-											<input
-												type='file'
-												name='files[]'
-												id='files-cert'
-												multiple='multiple'
-												className='simpleFile'
-												data-itext='#cert'
-												data-append='#cont1'
-												data-jfiler-files=''
-												style={{
-													position: "absolute",
-													left: "-9999px",
-													top: "-9999px",
-													zIndex: -9999,
-												}}
-											/>
-											<div className='jFiler-input'>
-												<div className='jFiler-input-caption'>
-													<span>Explorar</span>
-												</div>
-												<div className='jFiler-input-button'>
-													Subir archivo
-												</div>
-											</div>
-										</div>{" "}
+										<UploadFile  register= {register}/>
 										<span className='noteFile'>
 											Archivo en formato JPG o PDF (Peso
 											máximo de 2 MB)
@@ -138,10 +152,11 @@ export const Paso4 = () => {
 								</div>
 								<div id='cont1' className='gCDocs' />
 							</fieldset>
+
 							<hr className='gLine' />
 							<h3 className='titSectF'>4. Entregas</h3>
-							{/*Dinamic fields*/}
-							<fieldset className='gDiv max770'>
+						
+							{/* <fieldset className='gDiv max770'>
 								<p>
 									<label className='gLabel featured'>
 										En texto (impreso y digital) pueden
@@ -158,10 +173,10 @@ export const Paso4 = () => {
 										aria-invalid='false'
 									/>
 								</p>
-							</fieldset>
+							</fieldset> */}
 							<div className='contEntrega'>
-								{/*Listado entregas*/}
-								<div
+								
+								{/* <div
 									id='listEntregas'
 									className='listEntre'
 									data-nextitem={4}>
@@ -219,8 +234,7 @@ export const Paso4 = () => {
 										<div className='gCol col2'>
 											<div>
 												<p>
-													{/*<label for="files-publ1" class="gLabel">Subir archivo de publicación</label>*/}
-													{/* <label for="files-publ1" class="gLabel">Subir imagen del trabajo como fue publicado <br><br>En caso de no contar con el archivo digital se pueden escanear, en un solo archivo, las páginas que contienen el trabajo.</label> */}
+													
 													<label
 														htmlFor='files-publ1'
 														className='gLabel'>
@@ -341,7 +355,7 @@ export const Paso4 = () => {
 											2
 										</div>
 										<div className='gCol col2'>
-											{/* DIGITAL O IMPRESO */}
+										
 											<div>
 												<p>
 													<label
@@ -371,27 +385,9 @@ export const Paso4 = () => {
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> */}
 								{/*End Listado entregas*/}
-								{/* 
-                  <div class="gCol col2">
-                      <div>
-                          
-                     
-
-
-
-                                                              <button class="gBtn w100 txtUp btnAddEnt" type="button" data-maxent="3" data-type="" data-text="entrega">Agregar entrega</button>
-
-
-                                                          <span id='leyEntr' class="noteFile"></span>
-
-                           <button class="gBtn w100 txtUp btnAddEnt" type="button" data-maxent="3" data-type="" data-text="entrega">Agregar entrega</button>
-
-                      </div>
-
-                  </div>
- */}
+								
 								<div className='gCol col2'>
 									<div>
 										<button
@@ -417,7 +413,7 @@ export const Paso4 = () => {
 									</div>
 								</div>
 							</div>
-							{/*End Dinamic fields*/}
+							
 							<hr className='gLine' />
 							<div className='noteGreen'>
 								La información registrada en los siguientes
@@ -426,6 +422,9 @@ export const Paso4 = () => {
 								proporcionarán al jurado más elementos para
 								valorar su trabajo.
 							</div>
+
+
+							
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>5. Sinopsis</h3>
 								<p>
@@ -437,12 +436,13 @@ export const Paso4 = () => {
 									<br />
 									<br />
 									<textarea
-										name='sinop'
-										id='sinop'
+									{...register("sinopsis_tra", {
+												required: true,
+											})}
 										maxLength={1200}
 										data-max={1200}
 										className='countL'
-										defaultValue={""}
+										
 									/>
 									<span className='noteInput txtC'>
 										<strong>

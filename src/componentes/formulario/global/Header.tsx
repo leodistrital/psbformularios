@@ -1,13 +1,11 @@
 import { Intro } from "../login/Intro";
 import { useAppStore } from "../../../stores/app.store";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
-	const { inscripcion: inscripcionData ,  } = useAppStore((state) => state);
-
 	const logout = useAppStore((state) => state.logout);
-	const session = useAppStore((state) => state.login);
-
-	const { login ,mail , token, userid } = useAppStore((state) => state);
+	const { login: session, mail } = useAppStore((state) => state);
+		const navigate = useNavigate();
 
 	const salir = () => {
 		logout();
@@ -18,7 +16,7 @@ export const Header = () => {
 			<header className='pageHeader'>
 				<div className='maxW'>
 					<h1 className='logoPage'>
-						<a href='panel'>
+						<a href='#' onClick={()=> navigate("/panel")}>
 							<span className='gHidden'>
 								Premio Nacional de Periodismo Simón Bolívar
 							</span>
@@ -40,19 +38,9 @@ export const Header = () => {
 					<div className='contMMenu'>
 						{session && (
 							<div className='vAlign'>
-								{/* <h2>INSCRIPCIÓN DE TRABAJOS</h2> */}
-
-								<pre>
-									{JSON.stringify(inscripcionData, null, 2)}
-								</pre>
-								<pre>
-									{JSON.stringify({
-										login ,mail , token, userid
-									}, null, 2)}
-								</pre>
 								<p className='user'>
 									<strong className='des_login'>
-										leonardo.cortes@mottif.com
+										{mail}
 									</strong>
 									<a
 										href='#'

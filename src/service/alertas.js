@@ -69,8 +69,8 @@ export const liginError = ( Swal) => {
 			confirmButtonText: `Continuar`,
 			
 			customClass: {
-				confirmButton: "btnDarkcustom",
-				denyButton: "btnDarkcustom",
+				confirmButton: "gBtn w100 txtUp botongeneral",
+				denyButton: "gBtn w100 round",
 				title: "titulocustom",
 			},
 		}).then((result) => {

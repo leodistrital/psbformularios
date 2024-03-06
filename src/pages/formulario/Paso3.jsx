@@ -2,42 +2,62 @@ import { useEffect } from "react";
 import { HeaderPaso } from "../../componentes/formulario/global/HeaderPaso";
 import { useAppStore } from "../../stores/app.store";
 import { useNavigate } from "react-router-dom";
+import { Conexion } from "../../service/conexion";
 
 export const Paso3 = () => {
 	const navigate = useNavigate();
+	const datatable = new Conexion ();
 
 	const setformato = useAppStore((state) => state.setformato);
+	const settrabajo = useAppStore((state) => state.settrabajo);
 	const categoria = useAppStore((state) => state.inscripcion.categoria);
+	const { inscripcion:trabajo } = useAppStore((state) => state);
+	// const session = useAppStore((state) => state);
 
 	const setTrabajo = (data) => {
 		// console.log("llego", data);
 		setformato(data);
-		navigate("/paso4");
+		// navigate("/paso4");
+		crearTrabajo();
 	};
 
 	useEffect(() => {
 		if (categoria === 0) {
 			console.log("error");
-			// navigate("/panel");
+			navigate("/panel");
 		}
 	}, []);
 
 	useEffect(() => {
 		if (categoria == 15) {
 			setformato(15);
+			crearTrabajo();
 			console.log("entro");
-			navigate("/paso4");
+			// navigate("/paso4");
+			
 		}
 
 		if (categoria == 6) {
 			setformato(103);
-			console.log("entro");
-			navigate("/paso4");
+			crearTrabajo();
+			// console.log("entro");
+			// navigate("/paso4");
 		}
-		console.log("por el efec");
+		// console.log("por el efec");
 	}, []);
 
-	console.log(categoria);
+	const crearTrabajo = () => {
+		datatable.getCrearItem("trabajos", trabajo).then(({resp}) => {
+			// console.log(resp);
+			if (resp.codigo != 0) {
+				settrabajo(resp.codigo);
+				navigate("/paso4");
+			} 
+		});
+
+	}
+
+	// console.log(categoria);
 
 	return (
 		<>

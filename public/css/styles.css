@@ -2452,3 +2452,11 @@ a.gBtn span {
   font-family:  'Lora', sans-serif !important ;
 }
 
+.botongeneral{
+  /* background: #331839 !important; */
+  height: 56px !important;
+    padding: 0px 20px !important;
+    background: #331839 !important;
+    position: relative !important;
+    transition: opacity 0.25s ease!important; 
+}

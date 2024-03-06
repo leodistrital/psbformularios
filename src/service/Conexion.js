@@ -3,7 +3,7 @@ import { useAppStore } from "../stores/app.store";
 // import { Header } from '../componentes/global/Header';
 
 const URL = "http://localhost" + "/api/";
-const URLlogin = "http://localhost" + "/formulario/login";
+const URLlogin = "http://localhost" + "/login";
 
 export class Conexion {
 	header = {};
@@ -22,6 +22,7 @@ export class Conexion {
 		this.header = {
 			Authorization: this.session.token,
 			userapp: this.session.mail,
+			userid: this.session.userid,
 		};
 		// console.log(xtoken);
 

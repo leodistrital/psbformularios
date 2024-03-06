@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export const HeaderPaso = () => {
+
+	const navigate = useNavigate();
 	const encabezados = [
 		{
 			paso: 1,
@@ -48,7 +52,7 @@ export const HeaderPaso = () => {
 				{/*Btns direction*/}
 				<ul className='contBtnDir'>
 					<li>
-						<a href='panel' className='gBtn w100'>
+						<a href='#' onClick={()=> navigate("/panel")} className='gBtn w100'>
 							<span>RESUMEN INSCRIPCIÓN DE TRABAJOS</span>
 						</a>
 					</li>
