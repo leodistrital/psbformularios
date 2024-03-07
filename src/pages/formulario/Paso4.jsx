@@ -52,13 +52,13 @@ export const Paso4 = () => {
 	const onSubmitpost = handleSubmit((data) => {
 		console.log(data);
 		// toogleLoading(true);
-			datatable
-				.getEditarItem(Tabla, data, id)
-				.then(({ resp }) => {
-					console.log(resp);
-					// alertaGuardado(resp.status, Swal, setOpen);
-					// toogleLoading(false);
-				});
+			// datatable
+			// 	.getEditarItem(Tabla, data, id)
+			// 	.then(({ resp }) => {
+			// 		console.log(resp);
+			// 		// alertaGuardado(resp.status, Swal, setOpen);
+			// 		// toogleLoading(false);
+			// 	});
 		
 	});
 
@@ -139,10 +139,10 @@ export const Paso4 = () => {
 										className='txtLora color2'>
 										<strong>(Descargar modelo)</strong>
 									</a>
-								</p>
+								</p>b
 								<div className='gCol col2'>
 									<div>
-										<UploadFile  register= {register}/>
+										<UploadFile  register= {register}  camponombre = "doc1_tra" />
 										<span className='noteFile'>
 											Archivo en formato JPG o PDF (Peso
 											máximo de 2 MB)
@@ -150,7 +150,7 @@ export const Paso4 = () => {
 										<p />
 									</div>
 								</div>
-								<div id='cont1' className='gCDocs' />
+								{/* <div id='cont1' className='gCDocs' /> */}
 							</fieldset>
 
 							<hr className='gLine' />

@@ -4,6 +4,7 @@ import { useAppStore } from "../stores/app.store";
 
 const URL = "http://localhost" + "/api/";
 const URLlogin = "http://localhost" + "/login";
+const URLupload = "http://localhost/" ;
 
 export class Conexion {
 	header = {};
@@ -59,6 +60,14 @@ export class Conexion {
 		// console.log(tabla, data, 'envia crear')
 		return axios
 			.post(URL + tabla + "", { ...data }, { headers: this.header })
+			.then((res) => res.data);
+	}
+
+	getArchivo(tabla, data) {
+		this.updateHeader() ;
+		// console.log(tabla, data, 'envia crear')
+		return axios
+			.post(URLupload + tabla + "", data , { headers: this.header })
 			.then((res) => res.data);
 	}
 

@@ -1,7 +1,8 @@
 import { Reglas } from "../../componentes/formulario/panel/Reglas";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../stores/app.store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export const Panel = () => {
 	const navigate = useNavigate();
@@ -9,13 +10,14 @@ export const Panel = () => {
 	const settrabajo = useAppStore((state) => state.settrabajo);
 
 	useEffect(() => {
-		setresettrabajo()
-	}, [])
+		setresettrabajo();
+	}, []);
+
 	
-
-
 	return (
 		<>
+			
+
 			<div className='gContent maxW'>
 				<section className='gPanel'>
 					<div className='titleSec'>
@@ -38,14 +40,20 @@ export const Panel = () => {
 									<strong className='des_num_tra'>1</strong>
 								</li>
 							</ul>
-							<a href='#' className='gBtn txtUp' onClick={()=> navigate("/paso1")} >
+							<a
+								href='#'
+								className='gBtn txtUp'
+								onClick={() => navigate("/paso1")}>
 								<span>Inscribir nuevo trabajo</span>
 							</a>
 
-							<a href='#' className='gBtn txtUp' onClick={()=>  {
-								settrabajo(60094);
-				navigate("/paso4");
-							}} >
+							<a
+								href='#'
+								className='gBtn txtUp'
+								onClick={() => {
+									settrabajo(60094);
+									navigate("/paso4");
+								}}>
 								<span>test</span>
 							</a>
 						</div>
