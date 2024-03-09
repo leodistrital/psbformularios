@@ -2460,3 +2460,10 @@ a.gBtn span {
     position: relative !important;
     transition: opacity 0.25s ease!important; 
 }
+
+
+.imgcargando{
+  display: flex !important;
+		alignItems: center !important;
+		justifyContent: center !important;
+}

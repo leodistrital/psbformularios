@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import { HeaderPaso } from "../../componentes/formulario/global/HeaderPaso";
 import { useAppStore } from "../../stores/app.store";
 import { Conexion } from "../../service/conexion";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { UploadFile } from "../../componentes/global/UploadFile";
 
 export const Paso4 = () => {
-
-	const {id} = useAppStore((state) => state.inscripcion);
-	const datatable = new Conexion ();
+	const { id } = useAppStore((state) => state.inscripcion);
+	const datatable = new Conexion();
 	const Tabla = "trabajos";
 
 	const defaultValues = {
@@ -19,25 +18,37 @@ export const Paso4 = () => {
 		medios_tra: "",
 		doc1_tra: "",
 		entregas: [],
+		preguntas: [],
+		respuestas: [],
 	};
 
+	const {
+		register,
+		handleSubmit,
+		reset,
+		setValue,
+		getValues,
+		control,
+	} = useForm({ defaultValues });
 
-	const { register , handleSubmit , reset, getValues } = useForm({defaultValues});
-	
-// console.log(id);
+	const { fields } = useFieldArray({
+		name: "preguntas",
+		control: control,
+	});
+
+	// console.log(id);
 
 	//CARGA INICIAL
-	useEffect (() => {
-
+	useEffect(() => {
 		if (id === 0) {
 			console.log("error");
-			Navigate ("/panel");
+			Navigate("/panel");
 		}
 		console.log(id);
 
 		if (id > 0) {
 			// toogleLoading(true);
-			datatable.getItem(Tabla,id).then(({ data }) => {
+			datatable.getItem(Tabla, id).then(({ data }) => {
 				console.log(data);
 				reset(data);
 
@@ -45,23 +56,19 @@ export const Paso4 = () => {
 				// console.log(getValues("sucursales").length);
 				// toogleLoading(false);
 			});
-		} 
+		}
 	}, []);
 
 	//CREAR Y EDITAR
 	const onSubmitpost = handleSubmit((data) => {
 		console.log(data);
 		// toogleLoading(true);
-			// datatable
-			// 	.getEditarItem(Tabla, data, id)
-			// 	.then(({ resp }) => {
-			// 		console.log(resp);
-			// 		// alertaGuardado(resp.status, Swal, setOpen);
-			// 		// toogleLoading(false);
-			// 	});
-		
+		// datatable.getEditarItem(Tabla, data, id).then(({ resp }) => {
+		// 	console.log(resp);
+		// 	// alertaGuardado(resp.status, Swal, setOpen);
+		// 	// toogleLoading(false);
+		// });
 	});
-
 
 	return (
 		<>
@@ -81,10 +88,7 @@ export const Paso4 = () => {
 						</div>
 						<hr className='gLine noM' />
 						{/*Form trabajo*/}
-						<form
-							onSubmit={onSubmitpost}
-							className='gForm'
-							>
+						<form onSubmit={onSubmitpost} className='gForm'>
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>
 									1. Título del trabajo
@@ -94,9 +98,8 @@ export const Paso4 = () => {
 									<input
 										type='text'
 										{...register("titulo_tra", {
-												required: true,
-											})}
-										
+											required: true,
+										})}
 									/>
 								</p>
 							</fieldset>
@@ -115,8 +118,8 @@ export const Paso4 = () => {
 									<input
 										type='text'
 										{...register("medio_tra", {
-												required: true,
-											})}
+											required: true,
+										})}
 									/>
 								</p>
 							</fieldset>
@@ -134,15 +137,18 @@ export const Paso4 = () => {
 									certificado debe constar que el trabajo fue
 									publicado o emitido entre el 1 de mayo del
 									2023 y el 30 de abril de 2024.
-									<a
-										href='#'
-										className='txtLora color2'>
+									<a href='#' className='txtLora color2'>
 										<strong>(Descargar modelo)</strong>
 									</a>
-								</p>b
+								</p>
 								<div className='gCol col2'>
 									<div>
-										<UploadFile  register= {register}  camponombre = "doc1_tra" />
+										{/* <UploadFile
+											register={register}
+											setValue={setValue}
+											getValues={getValues}
+											camponombre='doc1_tra'
+										/> */}
 										<span className='noteFile'>
 											Archivo en formato JPG o PDF (Peso
 											máximo de 2 MB)
@@ -155,7 +161,7 @@ export const Paso4 = () => {
 
 							<hr className='gLine' />
 							<h3 className='titSectF'>4. Entregas</h3>
-						
+
 							{/* <fieldset className='gDiv max770'>
 								<p>
 									<label className='gLabel featured'>
@@ -175,7 +181,6 @@ export const Paso4 = () => {
 								</p>
 							</fieldset> */}
 							<div className='contEntrega'>
-								
 								{/* <div
 									id='listEntregas'
 									className='listEntre'
@@ -387,7 +392,7 @@ export const Paso4 = () => {
 									</div>
 								</div> */}
 								{/*End Listado entregas*/}
-								
+
 								<div className='gCol col2'>
 									<div>
 										<button
@@ -413,7 +418,7 @@ export const Paso4 = () => {
 									</div>
 								</div>
 							</div>
-							
+
 							<hr className='gLine' />
 							<div className='noteGreen'>
 								La información registrada en los siguientes
@@ -423,8 +428,6 @@ export const Paso4 = () => {
 								valorar su trabajo.
 							</div>
 
-
-							
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>5. Sinopsis</h3>
 								<p>
@@ -436,13 +439,12 @@ export const Paso4 = () => {
 									<br />
 									<br />
 									<textarea
-									{...register("sinopsis_tra", {
-												required: true,
-											})}
+										{...register("sinopsis_tra", {
+											required: true,
+										})}
 										maxLength={1200}
 										data-max={1200}
 										className='countL'
-										
 									/>
 									<span className='noteInput txtC'>
 										<strong>
@@ -454,71 +456,36 @@ export const Paso4 = () => {
 							<hr className='gLine' />
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>6. Preguntas</h3>
-								<p>
-									<label htmlFor='prim'>
-										{" "}
-										¿Qué aporte hizo su entrevista a lo que
-										se conocía sobre su entrevistado o sobre
-										el tema en cuestión?{" "}
-										<em className='txtLora color2'></em>{" "}
-									</label>
-									<br />
-									<br />
-									<textarea
-										name='prim_1'
-										id='prim_1'
-										maxLength={350}
-										data-max={350}
-										className='countL required'
-										aria-required='true'
-										defaultValue={""}
+
+								{fields.map((item, index) => (
+									<p key={index}>
+										<label htmlFor='prim'>
+											{item.pregunta}
+											<em className='txtLora color2'></em>{" "}
+										</label>
+										<br />
+										<br />
+										<textarea
+										{...register(`respuestas.${index}.respuesta` )}
+											maxLength={350}
+											data-max={350}
+											className='countL required'
+											defaultValue={item.respuesta}
+										/>
+										<input
+										type='text'
+										{...register(`respuestas.${index}.idpregunta` )}
+										value={item.idpregunta}
 									/>
-									<span className='noteInput txtC'>
-										<strong>
-											<em>350</em> caracteres
-										</strong>
-									</span>
-									<input
-										type='hidden'
-										name='preg_1'
-										id='preg_1'
-										defaultValue='1$$-edEZPxyXmtmXG3C6fwm'
-									/>
-								</p>
-								<p>
-									<label htmlFor='prim'>
-										{" "}
-										¿Qué impacto tuvo este trabajo en la
-										opinión pública?{" "}
-										<em className='txtLora color2'>
-											{" "}
-											(opcional){" "}
-										</em>{" "}
-									</label>
-									<br />
-									<br />
-									<textarea
-										name='prim_2'
-										id='prim_2'
-										maxLength={350}
-										data-max={350}
-										className='countL '
-										defaultValue={""}
-									/>
-									<span className='noteInput txtC'>
-										<strong>
-											<em>350</em> caracteres
-										</strong>
-									</span>
-									<input
-										type='hidden'
-										name='preg_2'
-										id='preg_2'
-										defaultValue='1$$-edEZPxyXqtmXG3C6fwm'
-									/>
-								</p>
+										<span className='noteInput txtC'>
+											<strong>
+												<em>350</em> caracteres
+											</strong>
+										</span>
+									</p>
+								))}
 							</fieldset>
-					
+
 							<div className='contGBtn max770'>
 								<div className='gCol col2'>
 									<div>
