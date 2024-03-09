@@ -1,10 +1,11 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
 import { Conexion } from "../../../service/conexion";
 // import { liginError } from "../../../service/alertas";
 import { useAppStore } from "../../../stores/app.store";
 import { useRef } from "react";
 import { liginErrorCorreo } from "../../../service/alertas";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const Registro = ({ Tabla }) => {
 	const datatable = new Conexion();
@@ -17,6 +18,7 @@ export const Registro = ({ Tabla }) => {
 		register,
 		handleSubmit,
 		watch,
+		control,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -170,8 +172,31 @@ export const Registro = ({ Tabla }) => {
 							</label>
 						</p>
 						<br />
-						{/*  <div id="recaptcha-div" class="gCaptcha"></div>
-              <p><input type="hidden" name="recaptcha" id="recaptcha" required></p> */}
+						
+						<div>
+							<Controller
+								name='recaptcha'
+								control={control}
+								rules={{ required: "Completa el reCAPTCHA" }}
+								render={({ field, fieldState }) => (
+									<>
+										<ReCAPTCHA
+											sitekey='6LdbYZMpAAAAAIc8uwKxUXK5vr-3sHrxQ16_M7Mq'
+											onChange={(value) => {
+												// Asigna el valor de reCAPTCHA al campo del formulario
+												field.onChange(value);
+											}}
+										/>
+										{fieldState?.error && (
+											<span className='error'>
+											<p>{fieldState.error.message}</p>
+											</span>
+										)}
+									</>
+								)}
+							/>
+						</div>
+						<br />
 						<div className='gCol col2'>
 							<div>
 								<button
