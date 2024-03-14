@@ -6,58 +6,57 @@ import { Conexion } from "../../service/conexion";
 
 export const Paso3 = () => {
 	const navigate = useNavigate();
-	const datatable = new Conexion ();
+	const datatable = new Conexion();
 
 	const setformato = useAppStore((state) => state.setformato);
 	const settrabajo = useAppStore((state) => state.settrabajo);
 	const categoria = useAppStore((state) => state.inscripcion.categoria);
-	const { inscripcion:trabajo } = useAppStore((state) => state);
+	const { inscripcion: trabajo } = useAppStore((state) => state);
+	const { id } = useAppStore((state) => state.inscripcion);
 	// const session = useAppStore((state) => state);
 
 	const setTrabajo = (data) => {
-		// console.log("llego", data);
 		setformato(data);
-		// navigate("/paso4");
-		crearTrabajo();
 	};
 
 	useEffect(() => {
-		if (categoria === 0) {
+		// console.log('render ');
+		if (trabajo.formato != 0 && id == 0 ) {
+			crearTrabajo();
+		}
+	}, [trabajo]);
+
+	useEffect(() => {
+		if (categoria === 0 || id != 0) {
 			console.log("error");
 			navigate("/panel");
 		}
-	}, []);
 
-	useEffect(() => {
 		if (categoria == 15) {
-			setformato(15);
-			crearTrabajo();
-			console.log("entro");
-			// navigate("/paso4");
+			// setformato(15);	
+			setTrabajo(15);
 			
 		}
 
 		if (categoria == 6) {
-			setformato(103);
-			crearTrabajo();
-			// console.log("entro");
-			// navigate("/paso4");
+			// setformato(103);
+			setTrabajo(103);
 		}
-		// console.log("por el efec");
 	}, []);
 
 	const crearTrabajo = () => {
-		datatable.getCrearItem("trabajos", trabajo).then(({resp}) => {
-			// console.log(resp);
-			if (resp.codigo != 0) {
-				settrabajo(resp.codigo);
-				navigate("/paso4");
-			} 
-		});
+		console.log(trabajo);
+		if (trabajo.formato != 0) {
+			datatable.getCrearItem("trabajos", trabajo).then(({ resp }) => {
+				// console.log(resp);
+				if (resp.codigo != 0) {
+					settrabajo(resp.codigo);
+					navigate("/paso4");
+				}
+			});
+		}
+	};
 
-	}
-
-	// console.log(categoria);
 
 	return (
 		<>
@@ -274,7 +273,7 @@ export const Paso3 = () => {
 									</li>
 								)}
 
-								{categoria == 7 && (
+								{/* {categoria == 7 && (
 									<li className='itemCate'>
 										<div className='cLeft'>
 											<a
@@ -293,7 +292,7 @@ export const Paso3 = () => {
 											</p>
 										</div>
 									</li>
-								)}
+								)} */}
 							</ul>
 						</div>
 						{/*End Listado soporte*/}

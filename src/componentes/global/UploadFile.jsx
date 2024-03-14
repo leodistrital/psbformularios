@@ -38,7 +38,7 @@ export const UploadFile = ({ register, camponombre, setValue, getValues }) => {
 		}
 	};
 
-	console.log(getValues(camponombre, 'xxxx'));
+	// console.log(getValues(camponombre, 'xxxx'));
 	useEffect(() => {
 		if (getValues(camponombre)) {
 			// console.log(getValues(camponombre), "en el efec  ");
@@ -67,7 +67,7 @@ export const UploadFile = ({ register, camponombre, setValue, getValues }) => {
 			/>
 			</div>
 
-			{getValues(camponombre) == null && (
+			{(getValues(camponombre) == null ||  getValues(camponombre) == '' ) && (
 				<div className='jFiler'>
 					<div className='jFiler-input'>
 						<div className='jFiler-input-caption'>

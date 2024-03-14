@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HeaderPaso } from "../../componentes/formulario/global/HeaderPaso";
 import { useAppStore } from "../../stores/app.store";
 import { Conexion } from "../../service/conexion";
 import { useForm, useFieldArray } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { Navigate, json } from "react-router-dom";
 import { UploadFile } from "../../componentes/global/UploadFile";
+import { ListaEntregas } from "../../componentes/formulario/trabajos/ListaEntregas";
 
 export const Paso4 = () => {
 	const { id } = useAppStore((state) => state.inscripcion);
+	const [dataEntreegas, setdataEntreegas] = useState([]);
 	const datatable = new Conexion();
 	const Tabla = "trabajos";
 
@@ -31,8 +33,8 @@ export const Paso4 = () => {
 		control,
 	} = useForm({ defaultValues });
 
-	const { fields } = useFieldArray({
-		name: "preguntas",
+	const { fields, append, remove } = useFieldArray({
+		name: "entregas",
 		control: control,
 	});
 
@@ -44,13 +46,15 @@ export const Paso4 = () => {
 			console.log("error");
 			Navigate("/panel");
 		}
-		console.log(id);
+		// console.log(id);
 
 		if (id > 0) {
 			// toogleLoading(true);
 			datatable.getItem(Tabla, id).then(({ data }) => {
-				console.log(data);
+				// console.log({data});
 				reset(data);
+				// setdataEntreegas(data.entregas)
+				// console.log(getValues("preguntas"));
 
 				// reset1(data);
 				// console.log(getValues("sucursales").length);
@@ -143,12 +147,12 @@ export const Paso4 = () => {
 								</p>
 								<div className='gCol col2'>
 									<div>
-										{/* <UploadFile
+										<UploadFile
 											register={register}
 											setValue={setValue}
 											getValues={getValues}
 											camponombre='doc1_tra'
-										/> */}
+										/>
 										<span className='noteFile'>
 											Archivo en formato JPG o PDF (Peso
 											máximo de 2 MB)
@@ -160,264 +164,37 @@ export const Paso4 = () => {
 							</fieldset>
 
 							<hr className='gLine' />
-							<h3 className='titSectF'>4. Entregas</h3>
+							<ListaEntregas register={register} agregarEntrega={append} removerEntrega={remove}   entregas={fields} categpria={getValues('categoria_tra')} tipoEntrega={getValues('cod_medio_tra')}  />
+							{console.log(fields)}
 
-							{/* <fieldset className='gDiv max770'>
-								<p>
-									<label className='gLabel featured'>
-										En texto (impreso y digital) pueden
-										presentarse máximo tres (3) entregas
-										sobre el mismo hecho.
-									</label>
+							{/* {fields.map((item, index) => {
+								
+									return (<div key={index}>
+									<h1 >hola</h1>
 									<input
 										type='text'
-										name='nument'
-										id='nument'
-										defaultValue=''
-										className='numEntregas inputHidden valid'
-										aria-required='true'
-										aria-invalid='false'
+										{...register(
+											`entregas.${index}.cod_seg_dse`
+										)}
 									/>
-								</p>
-							</fieldset> */}
-							<div className='contEntrega'>
-								{/* <div
-									id='listEntregas'
-									className='listEntre'
-									data-nextitem={4}>
-									<div id='itemEntre1' className='itemEntre'>
-										<button
-											className='rbtn btnRemove btnRemoveEnt'
-											type='button'>
-											Quitar
-										</button>
-										<div className='gCol col2'>
-											<div>
-												<p>
-													<label
-														htmlFor='titent1'
-														className='gLabel'>
-														Título de la entrega{" "}
-													</label>
-													<input
-														type='text'
-														name='titent1'
-														id='titent1'
-														required=''
-													/>
-												</p>
-											</div>
-											<div>
-												<p>
-													<label
-														htmlFor='fecent1'
-														className='gLabel'>
-														Fecha de emisión /
-														publicación
-													</label>
-													<label className='iCalendar'>
-														<input
-															type='text'
-															name='fecent1'
-															id='fecent1'
-															data-range='2022:2023'
-															required=''
-															className='hasDatepicker'
-														/>
-													</label>
-													<span className='noteFile'>
-														Solo podrán inscribirse
-														trabajos cuya fecha de
-														publicación o emisión
-														esté comprendida entre
-														el 1 de mayo de 2022 y
-														el 30 de abril de 2023
-													</span>
-												</p>
-											</div>
-										</div>
-										<div className='gCol col2'>
-											<div>
-												<p>
-													
-													<label
-														htmlFor='files-publ1'
-														className='gLabel'>
-														Subir imagen del trabajo
-														como fue publicado{" "}
-													</label>
-													<input
-														type='text'
-														name='publ1'
-														id='publ1'
-														defaultValue=''
-														readOnly=''
-														className='textFile'
-														required=''
-													/>
-												</p>
-												<div className='jFiler'>
-													<input
-														type='file'
-														name='files[]'
-														id='files-publ1'
-														multiple='multiple'
-														className='simpleFile'
-														data-itext='#publ1'
-														data-append='#contPub1'
-														data-jfiler-files=''
-														style={{
-															position:
-																"absolute",
-															left: "-9999px",
-															top: "-9999px",
-															zIndex: -9999,
-														}}
-													/>
-													<div className='jFiler-input'>
-														<div className='jFiler-input-caption'>
-															<span>
-																Explorar
-															</span>
-														</div>
-														<div className='jFiler-input-button'>
-															Subir archivo
-														</div>
-													</div>
-												</div>{" "}
-												<span className='noteFile'>
-													Archivo en formato JPG o PDF
-													en donde se reconozca el
-													medio, la fecha de
-													publicación y el texto
-													completo. <br /> (Peso
-													máximo de 10 MB) <br />
-													<br />
-													En caso de no contar con el
-													archivo digital se pueden
-													escanear, en un solo
-													archivo, las páginas que
-													contienen el trabajo.
-												</span>
-												<p />
-												<div
-													id='contPub1'
-													className='gCDocs'
-												/>
-											</div>
-										</div>
-									</div>
-									<div id='itemEntre2' className='itemEntre'>
-										<button
-											className='rbtn btnRemove btnRemoveEnt'
-											type='button'>
-											Quitar
-										</button>
-										<div className='gCol col2'>
-											<div>
-												<p>
-													<label
-														htmlFor='titent2'
-														className='gLabel'>
-														Título de la entrega
-													</label>
-													<input
-														type='text'
-														name='titent2'
-														id='titent2'
-														required=''
-													/>
-												</p>
-											</div>
-											<div>
-												<p>
-													<label
-														htmlFor='fecent2'
-														className='gLabel'>
-														Fecha de emisión /
-														publicación
-													</label>
-													<label className='iCalendar'>
-														<input
-															type='text'
-															name='fecent2'
-															id='fecent2'
-															data-range='2022:2023'
-															required=''
-															className='hasDatepicker'
-														/>
-													</label>
-													<span className='noteFile'>
-														Solo podrán inscribirse
-														trabajos cuya fecha de
-														publicación o emisión
-														esté comprendida entre
-														el 1 de mayo de 2022 y
-														el 30 de abril de 2023
-													</span>
-												</p>
-											</div>
-											2
-										</div>
-										<div className='gCol col2'>
-										
-											<div>
-												<p>
-													<label
-														htmlFor='urlent2'
-														className='gLabel'>
-														URL de publicación{" "}
-													</label>
-													<input
-														type='url'
-														name='urlent2'
-														id='urlent2'
-														required=''
-													/>
-													<span className='noteFile'>
-														Debe presentarse solo
-														una URL. Copie y pegue
-														la URL en este campo.{" "}
-														<br />
-														<br />
-														El contenido de este
-														trabajo debe estar
-														vigente hasta la
-														ceremonia de entrega del
-														Premio.
-													</span>
-												</p>
-											</div>
-										</div>
-									</div>
-								</div> */}
-								{/*End Listado entregas*/}
+									</div>)
+								
+							})} */}
 
-								<div className='gCol col2'>
-									<div>
-										<button
-											className='gBtn w100 txtUp btnAddEnt imp'
-											type='button'
-											data-maxent={3}
-											data-type={1}
-											data-text='entrega impresa'
-											style={{ display: "inline-block" }}>
-											AGREGAR OTRA entrega impresa
-										</button>
-									</div>
-									<div>
-										<button
-											className='gBtn w100 txtUp btnAddEnt dig'
-											type='button'
-											data-maxent={3}
-											data-type={2}
-											data-text='entrega digital'
-											style={{ display: "inline-block" }}>
-											AGREGAR OTRA entrega digital
-										</button>
-									</div>
-								</div>
-							</div>
+							{/* <div>
+								<button
+									className='gBtn w100 txtUp btnAddEnt imp'
+									type='button'
+									data-text='entrega impresa'
+									onClick={() => {
+										append({
+											cod_seg_dse: 15,
+											archivo: "",
+										});
+									}}>
+									AGREGAR OTRA entrega impresa
+								</button>
+							</div> */}
 
 							<hr className='gLine' />
 							<div className='noteGreen'>
@@ -457,26 +234,33 @@ export const Paso4 = () => {
 							<fieldset className='gDiv max770'>
 								<h3 className='titSectF'>6. Preguntas</h3>
 
-								{fields.map((item, index) => (
+								{getValues("preguntas").map((item, index) => (
 									<p key={index}>
 										<label htmlFor='prim'>
 											{item.pregunta}
-											<em className='txtLora color2'></em>{" "}
+											<em className='txtLora color2'></em>
 										</label>
 										<br />
 										<br />
 										<textarea
-										{...register(`respuestas.${index}.respuesta` )}
+											{...register(
+												`preguntas.${index}.respuesta`,
+												{
+													required: parseInt(
+														item.obligatorio
+													),
+												}
+											)}
 											maxLength={350}
-											data-max={350}
 											className='countL required'
-											defaultValue={item.respuesta}
 										/>
 										<input
-										type='text'
-										{...register(`respuestas.${index}.idpregunta` )}
-										value={item.idpregunta}
-									/>
+											type='hidden'
+											{...register(
+												`preguntas.${index}.idpregunta`
+											)}
+											value={item.idpregunta}
+										/>
 										<span className='noteInput txtC'>
 											<strong>
 												<em>350</em> caracteres
@@ -495,20 +279,18 @@ export const Paso4 = () => {
 											Guardar y continuar
 										</button>
 									</div>
+									<div className=''>
+										<pre>
+											{" "}
+											{JSON.stringify(
+												getValues(),
+												null,
+												2
+											)}
+										</pre>
+									</div>
 								</div>
 							</div>
-							<input
-								type='hidden'
-								name='poslb'
-								id='poslb'
-								defaultValue='1$$-edEZPxyXGxmXG3C6fwm'
-							/>
-							<input
-								type='hidden'
-								name='codigo_seguridad'
-								id='codigo_seguridad'
-								defaultValue='1$$-edEZPxyXKZnWaJnXG3C6fwm'
-							/>
 						</form>
 						{/*End Form trabajo*/}
 					</div>
